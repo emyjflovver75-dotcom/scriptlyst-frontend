@@ -1,6 +1,6 @@
-const STORAGE_KEY = '__whacka_user_id'
-const AUTH_TOKEN_KEY = '__whacka_auth_token'
-const AUTH_USER_KEY = '__whacka_auth_user'
+const STORAGE_KEY = 'scriptlyst_anon_id'
+const AUTH_TOKEN_KEY = 'scriptlyst_token'
+const AUTH_USER_KEY = 'scriptlyst_user'
 
 /**
  * Get the current user ID for data scoping.

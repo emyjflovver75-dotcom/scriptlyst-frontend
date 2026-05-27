@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { auth } from '../lib/auth'
 import { X, Loader2, Wand2 } from 'lucide-react'
 
@@ -7,22 +7,34 @@ export default function LoginModal({ onClose, onSuccess }) {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
+  const [slowWarning, setSlowWarning] = useState(false)
   const [error, setError] = useState('')
+  const slowTimer = useRef(null)
+
+  useEffect(() => () => clearTimeout(slowTimer.current), [])
 
   const submit = async () => {
     if (!email.trim() || !password) { setError('Please enter your email and password'); return }
     if (password.length < 6) { setError('Password must be at least 6 characters'); return }
     setLoading(true)
+    setSlowWarning(false)
     setError('')
+    slowTimer.current = setTimeout(() => setSlowWarning(true), 5000)
     try {
       const u = tab === 'login'
         ? await auth.signIn(email.trim(), password)
         : await auth.signUp(email.trim(), password)
       if (u) { onSuccess?.(u); onClose() }
+      else if (tab === 'signup') {
+        setError('Account created! Check your email to confirm, then log in.')
+        setTab('login')
+      }
     } catch (e) {
       setError(e.message || 'Something went wrong')
     } finally {
       setLoading(false)
+      setSlowWarning(false)
+      clearTimeout(slowTimer.current)
     }
   }
 
@@ -70,6 +82,9 @@ export default function LoginModal({ onClose, onSuccess }) {
         <div className="px-6 pb-8 space-y-3">
           {error && (
             <p className="text-red-500 text-xs text-center bg-red-50 rounded-xl py-2 px-3">{error}</p>
+          )}
+          {slowWarning && !error && (
+            <p className="text-amber-600 text-xs text-center bg-amber-50 rounded-xl py-2 px-3">Server is waking up, please wait a moment...</p>
           )}
 
           <input
