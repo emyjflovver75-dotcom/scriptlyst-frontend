@@ -114,23 +114,20 @@ export default function Paywall({ onClose }) {
 
         {/* Sign-in gate */}
         {!user ? (
-          <div className="px-6 pb-8">
+          <div className="px-6 pb-8 text-center">
+            <div className="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center bg-gray-50">
+              <LogIn size={24} className="text-gray-400" />
+            </div>
+            <p className="text-gray-900 font-display text-base font-bold">Sign in first</p>
+            <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-[260px] mx-auto">
+              Please sign in or create a free account, then come back here to upgrade.
+            </p>
             <button
-              onClick={handleSignIn}
-              disabled={signingIn}
-              className="w-full py-4 rounded-2xl font-display text-sm font-bold tracking-wide text-white btn-magic transition-all active:scale-[0.97] disabled:opacity-50"
+              onClick={onClose}
+              className="mt-4 w-full py-4 rounded-2xl font-display text-sm font-bold tracking-wide text-white btn-magic transition-all active:scale-[0.97]"
             >
-              {signingIn ? (
-                <span className="flex items-center justify-center gap-2">
-                  <Loader2 size={18} className="animate-spin" /> Signing in...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center gap-2">
-                  <LogIn size={18} /> Sign in to Subscribe
-                </span>
-              )}
+              Go Sign In
             </button>
-            <p className="text-center text-gray-400 text-[10px] mt-3">Create a free account to get started</p>
           </div>
         ) : submittedTier ? (
           <div className="text-center px-6 pb-10 pt-2">
