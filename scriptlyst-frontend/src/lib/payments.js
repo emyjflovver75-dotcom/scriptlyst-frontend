@@ -2,19 +2,18 @@
 import { membership as apiMembership } from './api'
 
 export const payments = {
-  async openStripe({ linkUrl, userId }) {
-    // Append client_reference_id so webhook knows which user to upgrade
-    const url = `${linkUrl}?client_reference_id=${userId}`
-    window.open(url, '_blank')
-  },
-
-  async getUpgradeUrl() {
+  // plan: 'creator-monthly' | 'pro-monthly'
+  async getUpgradeUrl(plan = 'pro-monthly') {
     try {
-      const data = await apiMembership.upgrade()
+      const data = await apiMembership.upgrade(plan)
       return data.redirect_url
     } catch (e) {
       console.error('Failed to get upgrade URL:', e)
       return null
     }
-  }
+  },
+
+  openUrl(url) {
+    if (url) window.open(url, '_blank')
+  },
 }

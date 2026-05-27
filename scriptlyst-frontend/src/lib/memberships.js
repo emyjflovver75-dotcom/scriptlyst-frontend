@@ -5,18 +5,21 @@ export const memberships = {
   async getCurrent() {
     try {
       const data = await apiMembership.status()
+      const isActive = data.tier === 'pro' && data.is_active
       return {
-        isActive: data.tier === 'pro' && data.is_active,
+        isActive,
         tier: data.tier,
-        expiresAt: data.expires_at
+        // stripe_plan distinguishes 'creator-monthly' ($17) from 'pro-monthly' ($37)
+        planName: data.stripe_plan || (isActive ? 'pro-monthly' : 'free'),
+        expiresAt: data.expires_at,
       }
     } catch {
-      return { isActive: false, tier: 'free' }
+      return { isActive: false, tier: 'free', planName: 'free' }
     }
   },
 
-  async startPending({ tierId, method }) {
+  async startPending({ tierId }) {
     const user = JSON.parse(localStorage.getItem('scriptlyst_user') || '{}')
-    return { userId: user.id, tierId, method }
-  }
+    return { userId: user.id, tierId }
+  },
 }

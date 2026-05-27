@@ -150,11 +150,11 @@ export const membership = {
     return data
   },
 
-  async upgrade() {
+  async upgrade(plan = 'pro-monthly') {
     const res = await fetch(`${API_URL}/api/membership/upgrade`, {
       method: 'POST',
       headers: getHeaders(),
-      body: JSON.stringify({ plan: 'pro-monthly' })
+      body: JSON.stringify({ plan })
     })
     const data = await res.json()
     if (!res.ok) throw new Error(data.error || 'Failed to upgrade')
