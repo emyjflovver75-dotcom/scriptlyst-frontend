@@ -4,6 +4,7 @@ import { useNiche } from '../hooks/useNiche'
 import { usePro } from '../hooks/usePro'
 import { Target, Sparkles, Wand2, Crown, LogIn, User } from 'lucide-react'
 import Paywall from '../components/Paywall'
+import LoginModal from '../components/LoginModal'
 
 const POPULAR_NICHES = [
   'Tech Reviews', 'Fitness & Gym', 'Personal Finance', 'Cooking',
@@ -17,6 +18,7 @@ export default function HomePage() {
   const { isPro } = usePro()
   const [input, setInput] = useState('')
   const [showPaywall, setShowPaywall] = useState(false)
+  const [showLogin, setShowLogin] = useState(false)
   const [user, setUser] = useState(auth.getCurrentUser())
 
   useEffect(() => {
@@ -29,10 +31,7 @@ export default function HomePage() {
     if (v.trim()) setNiche(v.trim())
   }
 
-  const handleSignIn = async () => {
-    const u = await auth.signIn()
-    if (u) setUser(u)
-  }
+  const handleSignIn = () => setShowLogin(true)
 
   return (
     <div className="min-h-full flex flex-col">
@@ -151,6 +150,7 @@ export default function HomePage() {
       )}
 
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} onSuccess={u => setUser(u)} />}
     </div>
   )
 }
