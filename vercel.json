@@ -1,5 +1,0 @@
-{
-  "buildCommand": "cd scriptlyst-frontend && npm install && npm run build",
-  "outputDirectory": "scriptlyst-frontend/dist",
-  "rewrites": [{ "source": "/(.*)", "destination": "/index.html" }]
-}
