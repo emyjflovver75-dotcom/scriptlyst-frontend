@@ -3,10 +3,15 @@
  * project-scoped persistent storage. Returns permanent public URLs.
  */
 
-import { getAuthHeaders, getHeaders } from './_headers'
+const API_BASE = import.meta.env.VITE_API_URL || ''
 
-const API_BASE = import.meta.env.VITE_API_BASE || ''
-const PROJECT_ID = import.meta.env.VITE_PROJECT_ID
+function getHeaders() { return { 'Content-Type': 'application/json' } }
+function getAuthHeaders() {
+  try {
+    const token = localStorage.getItem('scriptlyst_token')
+    return token ? { Authorization: `Bearer ${token}` } : {}
+  } catch { return {} }
+}
 
 export const storage = {
   /**
@@ -24,7 +29,7 @@ export const storage = {
     const body = { url }
     if (options.filename) body.filename = options.filename
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/storage/from-url`, {
+    const res = await fetch(`${API_BASE}/api/storage/from-url`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
@@ -54,7 +59,7 @@ export const storage = {
     const formData = new FormData()
     formData.append('file', blob, filename)
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/storage/upload`, {
+    const res = await fetch(`${API_BASE}/api/storage/upload`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,

@@ -1,8 +1,16 @@
-import { handleRateLimit } from './_rate-limit'
-import { getAuthHeaders, getHeaders } from './_headers'
+const API_BASE = import.meta.env.VITE_API_URL || ''
 
-const API_BASE = import.meta.env.VITE_API_BASE || ''
-const PROJECT_ID = import.meta.env.VITE_PROJECT_ID
+function getHeaders() { return { 'Content-Type': 'application/json' } }
+function getAuthHeaders() {
+  try {
+    const token = localStorage.getItem('scriptlyst_token')
+    return token ? { Authorization: `Bearer ${token}` } : {}
+  } catch { return {} }
+}
+async function handleRateLimit() {}
+
+// Audio routes are not yet wired to the Scriptlyst backend.
+// These stubs keep the module importable without Whacka dependencies.
 
 // ─────────────────────────────────────────────
 // Helpers
@@ -204,7 +212,7 @@ export const audio = {
     if (save) formData.append('save', 'true')
     if (sessionId) formData.append('sessionId', sessionId)
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/transcribe`, {
+    const res = await fetch(`${API_BASE}/api/audio/transcribe`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -238,7 +246,7 @@ export const audio = {
     const formData = new FormData()
     formData.append('file', blob, `recording.${extForMime(blob.type)}`)
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/upload`, {
+    const res = await fetch(`${API_BASE}/api/audio/upload`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -273,7 +281,7 @@ export const audio = {
     const { voice } = options
     console.log('[audio] speak called: text=' + text.length + ' chars, voice=' + (voice || 'default'))
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/tts`, {
+    const res = await fetch(`${API_BASE}/api/audio/tts`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ text, voice, stream: false }),
@@ -309,7 +317,7 @@ export const audio = {
     const { voice } = options
     console.log('[audio] speakStream called: text=' + text.length + ' chars, voice=' + (voice || 'default'))
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/tts`, {
+    const res = await fetch(`${API_BASE}/api/audio/tts`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ text, voice, stream: true }),
@@ -675,7 +683,7 @@ export const audio = {
     if (duration) body.duration = duration
     if (instrumental) body.instrumental = true
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/music`, {
+    const res = await fetch(`${API_BASE}/api/audio/music`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
@@ -717,7 +725,7 @@ export const audio = {
     if (voice) formData.append('voice', voice)
     if (denoise) formData.append('denoise', 'true')
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voice`, {
+    const res = await fetch(`${API_BASE}/api/audio/voice`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -758,7 +766,7 @@ export const audio = {
     if (denoise) formData.append('denoise', 'true')
     formData.append('stream', 'true')
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voice`, {
+    const res = await fetch(`${API_BASE}/api/audio/voice`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -914,7 +922,7 @@ export const audio = {
     if (duration) body.duration = duration
     if (loop) body.loop = true
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/sound-effect`, {
+    const res = await fetch(`${API_BASE}/api/audio/sound-effect`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
@@ -952,7 +960,7 @@ export const audio = {
     const body = { description }
     if (text) body.text = text
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voice-design`, {
+    const res = await fetch(`${API_BASE}/api/audio/voice-design`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify(body),
@@ -989,7 +997,7 @@ export const audio = {
     const { name, description } = options
     console.log('[audio] saveVoice called: id=' + generatedVoiceId.substring(0, 12) + ', name=' + name)
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voice-save`, {
+    const res = await fetch(`${API_BASE}/api/audio/voice-save`, {
       method: 'POST',
       headers: getHeaders(),
       body: JSON.stringify({ generatedVoiceId, name, description }),
@@ -1029,7 +1037,7 @@ export const audio = {
       formData.append('files', blob, `sample.${extForMime(blob.type)}`)
     }
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voice-clone`, {
+    const res = await fetch(`${API_BASE}/api/audio/voice-clone`, {
       method: 'POST',
       headers: getAuthHeaders(),
       body: formData,
@@ -1058,7 +1066,7 @@ export const audio = {
   async listVoices() {
     console.log('[audio] listVoices called')
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voices`, {
+    const res = await fetch(`${API_BASE}/api/audio/voices`, {
       method: 'GET',
       headers: getAuthHeaders(),
     })
@@ -1086,7 +1094,7 @@ export const audio = {
   async deleteVoice(voiceId) {
     console.log('[audio] deleteVoice called: voiceId=' + voiceId.substring(0, 12))
 
-    const res = await fetch(`${API_BASE}/api/app/${PROJECT_ID}/audio/voices`, {
+    const res = await fetch(`${API_BASE}/api/audio/voices`, {
       method: 'DELETE',
       headers: getHeaders(),
       body: JSON.stringify({ voiceId }),
