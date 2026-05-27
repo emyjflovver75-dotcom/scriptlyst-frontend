@@ -3,6 +3,7 @@ import { auth } from '../lib/auth'
 import { payments } from '../lib/payments'
 import { usePro } from '../hooks/usePro'
 import { Crown, Check, X, Loader2, Zap, Video, LogIn, Sparkles } from 'lucide-react'
+import LoginModal from './LoginModal'
 
 const TIERS = [
   {
@@ -49,7 +50,7 @@ export default function Paywall({ onClose }) {
   const { refresh } = usePro()
   const [loadingTier, setLoadingTier] = useState(null)
   const [user, setUser] = useState(auth.getCurrentUser())
-  const [signingIn, setSigningIn] = useState(false)
+  const [showLogin, setShowLogin] = useState(false)
   const [submittedTier, setSubmittedTier] = useState(null)
 
   useEffect(() => {
@@ -57,20 +58,8 @@ export default function Paywall({ onClose }) {
     return unsub
   }, [])
 
-  const handleSignIn = async () => {
-    setSigningIn(true)
-    try {
-      const u = await auth.signIn()
-      if (u) setUser(u)
-    } catch (e) {
-      console.error(e)
-    } finally {
-      setSigningIn(false)
-    }
-  }
-
   const handleSubscribe = async (tierId) => {
-    if (!user) { handleSignIn(); return }
+    if (!user) { setShowLogin(true); return }
     setLoadingTier(tierId)
     try {
       const url = await payments.getUpgradeUrl(tierId)
@@ -120,13 +109,13 @@ export default function Paywall({ onClose }) {
             </div>
             <p className="text-gray-900 font-display text-base font-bold">Sign in first</p>
             <p className="text-gray-500 text-sm mt-2 leading-relaxed max-w-[260px] mx-auto">
-              Please sign in or create a free account, then come back here to upgrade.
+              Please sign in or create a free account to upgrade.
             </p>
             <button
-              onClick={onClose}
+              onClick={() => setShowLogin(true)}
               className="mt-4 w-full py-4 rounded-2xl font-display text-sm font-bold tracking-wide text-white btn-magic transition-all active:scale-[0.97]"
             >
-              Go Sign In
+              Sign In / Create Account
             </button>
           </div>
         ) : submittedTier ? (
@@ -215,6 +204,12 @@ export default function Paywall({ onClose }) {
           </div>
         )}
       </div>
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          onSuccess={(u) => { setUser(u); setShowLogin(false) }}
+        />
+      )}
     </div>
   )
 }
