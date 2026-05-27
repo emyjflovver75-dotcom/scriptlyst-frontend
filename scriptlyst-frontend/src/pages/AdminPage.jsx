@@ -38,7 +38,7 @@ export default function AdminPage() {
       await memberships.defineTiers([
         {
           id: 'pro-monthly',
-          name: "Emy's Magic Pro",
+          name: "Scriptlyst Pro",
           price: 17,
           currency: 'USD',
           period: 'month',
@@ -99,7 +99,7 @@ export default function AdminPage() {
 
   return (
     <div className="min-h-full">
-      <PageHeader title="Emy's Magic — Admin" subtitle="Manage Pro subscriptions" />
+      <PageHeader title="Scriptlyst — Admin" subtitle="Manage Pro subscriptions" />
 
       <div className="px-4 space-y-4 pb-4">
         {/* Message toast */}
@@ -115,7 +115,7 @@ export default function AdminPage() {
               <Settings size={22} className="text-[rgb(140,40,255)]" />
             </div>
             <h3 className="text-gray-900 font-display text-base font-bold mb-2">First-Time Setup</h3>
-            <p className="text-gray-500 text-sm mb-1">Set yourself as the admin of Emy's Magic.</p>
+            <p className="text-gray-500 text-sm mb-1">Set yourself as the admin of Scriptlyst.</p>
             <p className="text-gray-400 text-xs mb-5">This creates the Pro tier ($17/mo) and gives you control over payments.</p>
             <button onClick={handleSetup} className="px-8 py-3.5 rounded-xl font-display text-sm font-bold text-white btn-magic transition-all active:scale-[0.97]">
               Run Setup

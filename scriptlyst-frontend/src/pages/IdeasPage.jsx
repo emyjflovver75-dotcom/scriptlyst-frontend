@@ -63,7 +63,7 @@ Number them 1-10. Make titles varied — mix "How to", listicles, challenges, st
   return (
     <div className="min-h-full">
       <PageHeader
-        title="Emy's Magic — Ideas"
+        title="Scriptlyst — Ideas"
         subtitle={`Fresh content ideas for ${niche}`}
         right={<ProBadge onUpgrade={() => setShowPaywall(true)} />}
       />

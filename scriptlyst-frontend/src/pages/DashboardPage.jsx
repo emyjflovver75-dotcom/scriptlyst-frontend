@@ -54,9 +54,10 @@ export default function DashboardPage() {
         <div className="pt-4 flex items-center justify-between">
           <div className="flex-1">
             <h1 className="font-display text-lg font-bold text-gray-900 tracking-tight">
-              Emy's Magic ✨
+              Scriptlyst ✨
             </h1>
             <p className="text-gray-500 text-xs mt-0.5">Your content command center</p>
+            <p className="text-[10px] font-semibold mt-0.5" style={{ color: 'rgb(140,40,255)' }}>powered by Emy's Magic</p>
           </div>
           <div className="flex items-center gap-2">
             {isPro && (

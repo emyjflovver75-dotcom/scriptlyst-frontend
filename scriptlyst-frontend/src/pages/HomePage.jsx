@@ -75,7 +75,7 @@ export default function HomePage() {
           </div>
         </div>
         <h1 className="font-display text-3xl font-bold text-white leading-tight">
-          Emy's Magic<br />
+          Scriptlyst<br />
           <span className="text-[rgb(220,130,255)] glow-text">Content Studio</span>
         </h1>
         <p className="text-gray-400 text-sm mt-4 leading-relaxed max-w-[280px] mx-auto">

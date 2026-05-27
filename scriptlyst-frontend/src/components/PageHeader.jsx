@@ -13,6 +13,7 @@ export default function PageHeader({ title, subtitle, left, right }) {
           {subtitle && (
             <p className="text-gray-500 text-xs mt-0.5">{subtitle}</p>
           )}
+          <p className="text-[10px] font-semibold mt-0.5" style={{ color: 'rgb(140,40,255)' }}>powered by Emy's Magic</p>
         </div>
         {right && <div className="shrink-0">{right}</div>}
       </div>

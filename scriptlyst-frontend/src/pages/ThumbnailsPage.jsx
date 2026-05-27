@@ -79,7 +79,7 @@ export default function ThumbnailsPage() {
   return (
     <div className="min-h-full">
       <PageHeader
-        title="Emy's Magic — Visuals"
+        title="Scriptlyst — Visuals"
         subtitle="AI-generated visuals for your channel"
         right={<ProBadge onUpgrade={() => setShowPaywall(true)} />}
       />

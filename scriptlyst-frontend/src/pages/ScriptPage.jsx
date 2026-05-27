@@ -100,7 +100,7 @@ HASHTAGS:
   return (
     <div className="min-h-full">
       <PageHeader
-        title="Emy's Magic — Scripts"
+        title="Scriptlyst — Scripts"
         subtitle="Full scripts, hooks & descriptions"
         right={<ProBadge onUpgrade={() => setShowPaywall(true)} />}
       />

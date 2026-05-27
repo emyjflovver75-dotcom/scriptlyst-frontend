@@ -86,7 +86,7 @@ export default function Paywall({ onClose }) {
             <Crown size={28} className="text-[rgb(140,40,255)]" />
           </div>
           <h2 className="font-display text-xl font-bold text-gray-900">
-            Emy's Magic Pro
+            Scriptlyst Pro
           </h2>
           <p className="text-gray-500 text-sm mt-2">
             Unlimited YouTube content generation

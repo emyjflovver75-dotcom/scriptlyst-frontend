@@ -2,6 +2,7 @@ import { HashRouter, Routes, Route, NavLink, useLocation } from 'react-router-do
 import { Home, Lightbulb, FileText, Image, Wrench } from 'lucide-react'
 import { ProProvider } from './hooks/usePro'
 import { NicheProvider, useNiche } from './hooks/useNiche'
+import Footer from './components/Footer'
 import HomePage from './pages/HomePage'
 import DashboardPage from './pages/DashboardPage'
 import IdeasPage from './pages/IdeasPage'
@@ -83,6 +84,7 @@ function AppContent() {
             <Route path="/hashtags" element={<HashtagPage />} />
             <Route path="/title-tester" element={<TitleTesterPage />} />
           </Routes>
+          <Footer />
         </div>
         <TabBar />
       </div>
