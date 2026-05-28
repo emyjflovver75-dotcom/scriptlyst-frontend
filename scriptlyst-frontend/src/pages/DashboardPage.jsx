@@ -11,6 +11,7 @@ import {
   Lightbulb, FileText, Image, Zap, Calendar, Repeat, Search, Hash,
   MessageSquare, Crown, Clock, ChevronRight, Sparkles, LogIn, User, LogOut, Shield
 } from 'lucide-react'
+import LoginModal from '../components/LoginModal'
 
 const QUICK_ACTIONS = [
   { icon: Lightbulb, label: 'Video Ideas', path: '/ideas', color: '#8c28ff' },
@@ -28,6 +29,7 @@ export default function DashboardPage() {
   const { niche } = useNiche()
   const { isPro, checkCanUse } = usePro()
   const [showPaywall, setShowPaywall] = useState(false)
+  const [showLogin, setShowLogin] = useState(false)
   const [user, setUser] = useState(auth.getCurrentUser())
   const [recentCount, setRecentCount] = useState(0)
 
@@ -39,11 +41,6 @@ export default function DashboardPage() {
   useEffect(() => {
     db.count('history').then(setRecentCount).catch(() => {})
   }, [])
-
-  const handleSignIn = async () => {
-    const u = await auth.signIn()
-    if (u) setUser(u)
-  }
 
   const genCheck = checkCanUse('generate')
 
@@ -75,7 +72,7 @@ export default function DashboardPage() {
               </button>
             ) : (
               <button
-                onClick={handleSignIn}
+                onClick={() => setShowLogin(true)}
                 className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-full text-[11px] text-gray-500 bg-white border border-gray-100 active:scale-95 transition-all"
               >
                 <LogIn size={12} />
@@ -198,6 +195,7 @@ export default function DashboardPage() {
       </div>
 
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
+      {showLogin && <LoginModal onClose={() => setShowLogin(false)} onSuccess={u => { setUser(u); setShowLogin(false) }} />}
     </div>
   )
 }
