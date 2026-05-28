@@ -25,11 +25,18 @@ export default function ThumbnailsPage() {
   const [showPaywall, setShowPaywall] = useState(false)
   const [showLogin, setShowLogin] = useState(false)
   const [user, setUser] = useState(getCurrentUser())
+  const pendingGenerate = useRef(false)
 
   useEffect(() => {
     const unsub = auth.onAuthChange(u => setUser(u))
     return unsub
   }, [])
+
+  // Verify session with backend whenever Video tab is opened
+  useEffect(() => {
+    if (mode !== 'video') return
+    auth.verifySession().then(u => { if (u) setUser(u) })
+  }, [mode])
 
   // ── Images state ──
   const [concept, setConcept] = useState('')
@@ -134,6 +141,7 @@ export default function ThumbnailsPage() {
     } catch (e) {
       const msg = e.message || ''
       if (msg.toLowerCase().includes('authorization') || msg.toLowerCase().includes('token') || msg.includes('401')) {
+        pendingGenerate.current = true
         setShowLogin(true)
       } else if (msg.includes('Pro membership') || msg.includes('403')) {
         setShowPaywall(true)
@@ -343,7 +351,15 @@ export default function ThumbnailsPage() {
       {showLogin && (
         <LoginModal
           onClose={() => setShowLogin(false)}
-          onSuccess={u => { setUser(u); setShowLogin(false) }}
+          onSuccess={u => {
+            setUser(u)
+            setShowLogin(false)
+            // Auto-generate if user had a script ready
+            if (pendingGenerate.current && videoScript.trim()) {
+              pendingGenerate.current = false
+              setTimeout(handleGenerateVideo, 300)
+            }
+          }}
         />
       )}
     </div>
