@@ -94,7 +94,6 @@ export default function ThumbnailsPage() {
   // ── Video generation ──
   const handleGenerateVideo = async () => {
     if (!videoScript.trim()) return
-    if (!isPro) { setShowPaywall(true); return }
 
     clearInterval(pollRef.current)
     setVideoLoading(true)
@@ -124,7 +123,12 @@ export default function ThumbnailsPage() {
         } catch { /* keep polling */ }
       }, 10000)
     } catch (e) {
-      setVideoError(e.message || 'Failed to start video generation.')
+      const msg = e.message || ''
+      if (msg.includes('Pro membership') || msg.includes('403')) {
+        setShowPaywall(true)
+      } else {
+        setVideoError(msg || 'Failed to start video generation.')
+      }
       setVideoLoading(false)
     }
   }
@@ -240,28 +244,6 @@ export default function ThumbnailsPage() {
         {/* ── VIDEO TAB ── */}
         {mode === 'video' && (
           <div className="px-4 space-y-3">
-            {!isPro && (
-              <div className="content-card p-4 text-center" style={{ border: '1px solid rgba(140,40,255,0.2)', background: 'rgba(140,40,255,0.04)' }}>
-                <p className="text-[rgb(140,40,255)] font-display font-bold text-sm">Pro Feature</p>
-                <p className="text-gray-500 text-xs mt-1">AI video generation requires a Pro plan ($37/mo)</p>
-                <div className="flex gap-2 mt-3 justify-center">
-                  <button
-                    onClick={() => setShowPaywall(true)}
-                    className="px-5 py-2 rounded-xl text-xs font-bold text-white btn-magic"
-                  >
-                    Upgrade to Pro
-                  </button>
-                  <button
-                    onClick={refreshPro}
-                    className="px-3 py-2 rounded-xl text-xs font-bold text-gray-500 flex items-center gap-1"
-                    style={{ background: 'rgba(0,0,0,0.05)' }}
-                    title="Already paid? Tap to refresh your plan status"
-                  >
-                    <RefreshCw size={12} /> Refresh
-                  </button>
-                </div>
-              </div>
-            )}
 
             <div className="content-card p-4">
               <div className="flex items-center gap-2 mb-2">
@@ -285,7 +267,7 @@ export default function ThumbnailsPage() {
             >
               {videoLoading
                 ? <><Loader2 size={18} className="animate-spin" /> Generating video...</>
-                : <><Sparkles size={16} /> Generate Video {!isPro && '(Pro)'}</>}
+                : <><Sparkles size={16} /> Generate Video</>}
             </button>
 
             {videoLoading && videoStatus === 'processing' && (
