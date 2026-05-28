@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect } from 'react'
 import { ai } from '../lib/ai'
-import { generate, video as videoApi } from '../lib/api'
+import { generate, video as videoApi, getCurrentUser } from '../lib/api'
 import { db } from '../lib/db'
 import { useNiche } from '../hooks/useNiche'
 import { usePro } from '../hooks/usePro'
 import PageHeader, { ProBadge } from '../components/PageHeader'
 import NicheBar from '../components/NicheBar'
 import Paywall from '../components/Paywall'
-import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircle, ExternalLink, RefreshCw } from 'lucide-react'
+import LoginModal from '../components/LoginModal'
+import { auth } from '../lib/auth'
+import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircle, ExternalLink, LogIn } from 'lucide-react'
 
 const STYLES = [
   { id: 'youtube', label: 'YouTube Thumbnail', emoji: '🎬' },
@@ -21,6 +23,13 @@ export default function ThumbnailsPage() {
   const { isPro, checkCanUse, recordUse, refresh: refreshPro } = usePro()
   const [mode, setMode] = useState('images')
   const [showPaywall, setShowPaywall] = useState(false)
+  const [showLogin, setShowLogin] = useState(false)
+  const [user, setUser] = useState(getCurrentUser())
+
+  useEffect(() => {
+    const unsub = auth.onAuthChange(u => setUser(u))
+    return unsub
+  }, [])
 
   // ── Images state ──
   const [concept, setConcept] = useState('')
@@ -124,7 +133,9 @@ export default function ThumbnailsPage() {
       }, 10000)
     } catch (e) {
       const msg = e.message || ''
-      if (msg.includes('Pro membership') || msg.includes('403')) {
+      if (msg.toLowerCase().includes('authorization') || msg.toLowerCase().includes('token') || msg.includes('401')) {
+        setShowLogin(true)
+      } else if (msg.includes('Pro membership') || msg.includes('403')) {
         setShowPaywall(true)
       } else {
         setVideoError(msg || 'Failed to start video generation.')
@@ -244,6 +255,26 @@ export default function ThumbnailsPage() {
         {/* ── VIDEO TAB ── */}
         {mode === 'video' && (
           <div className="px-4 space-y-3">
+            {!user ? (
+              <div className="content-card p-4 flex items-center gap-3">
+                <LogIn size={18} className="text-gray-400 shrink-0" />
+                <div className="flex-1">
+                  <p className="text-sm font-bold text-gray-800">Sign in to generate videos</p>
+                  <p className="text-xs text-gray-400 mt-0.5">You need to be signed in to use this feature</p>
+                </div>
+                <button
+                  onClick={() => setShowLogin(true)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-white btn-magic shrink-0"
+                >
+                  Sign In
+                </button>
+              </div>
+            ) : (
+              <div className="px-1 py-1 flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-green-400" />
+                <p className="text-[10px] text-gray-400">Signed in as <span className="font-bold text-gray-600">{user.email?.split('@')[0]}</span></p>
+              </div>
+            )}
 
             <div className="content-card p-4">
               <div className="flex items-center gap-2 mb-2">
@@ -305,9 +336,16 @@ export default function ThumbnailsPage() {
             </p>
           </div>
         )}
+
       </div>
 
       {showPaywall && <Paywall onClose={() => setShowPaywall(false)} />}
+      {showLogin && (
+        <LoginModal
+          onClose={() => setShowLogin(false)}
+          onSuccess={u => { setUser(u); setShowLogin(false) }}
+        />
+      )}
     </div>
   )
 }
