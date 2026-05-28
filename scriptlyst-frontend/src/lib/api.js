@@ -158,6 +158,18 @@ export const history = {
   }
 }
 
+// Video API
+export const video = {
+  async status(videoId) {
+    const res = await fetchWithTimeout(`${API_URL}/api/video-status/${videoId}`, {
+      headers: getHeaders()
+    })
+    const data = await res.json()
+    if (!res.ok) throw new Error(data.error || 'Failed to check video status')
+    return data
+  }
+}
+
 // Membership API
 export const membership = {
   async status() {
