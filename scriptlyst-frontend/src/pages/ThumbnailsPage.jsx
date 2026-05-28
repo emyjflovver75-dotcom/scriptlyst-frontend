@@ -7,7 +7,7 @@ import { usePro } from '../hooks/usePro'
 import PageHeader, { ProBadge } from '../components/PageHeader'
 import NicheBar from '../components/NicheBar'
 import Paywall from '../components/Paywall'
-import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircle, ExternalLink } from 'lucide-react'
+import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircle, ExternalLink, RefreshCw } from 'lucide-react'
 
 const STYLES = [
   { id: 'youtube', label: 'YouTube Thumbnail', emoji: '🎬' },
@@ -18,7 +18,7 @@ const STYLES = [
 
 export default function ThumbnailsPage() {
   const { niche } = useNiche()
-  const { isPro, checkCanUse, recordUse } = usePro()
+  const { isPro, checkCanUse, recordUse, refresh: refreshPro } = usePro()
   const [mode, setMode] = useState('images')
   const [showPaywall, setShowPaywall] = useState(false)
 
@@ -244,12 +244,22 @@ export default function ThumbnailsPage() {
               <div className="content-card p-4 text-center" style={{ border: '1px solid rgba(140,40,255,0.2)', background: 'rgba(140,40,255,0.04)' }}>
                 <p className="text-[rgb(140,40,255)] font-display font-bold text-sm">Pro Feature</p>
                 <p className="text-gray-500 text-xs mt-1">AI video generation requires a Pro plan ($37/mo)</p>
-                <button
-                  onClick={() => setShowPaywall(true)}
-                  className="mt-3 px-5 py-2 rounded-xl text-xs font-bold text-white btn-magic"
-                >
-                  Upgrade to Pro
-                </button>
+                <div className="flex gap-2 mt-3 justify-center">
+                  <button
+                    onClick={() => setShowPaywall(true)}
+                    className="px-5 py-2 rounded-xl text-xs font-bold text-white btn-magic"
+                  >
+                    Upgrade to Pro
+                  </button>
+                  <button
+                    onClick={refreshPro}
+                    className="px-3 py-2 rounded-xl text-xs font-bold text-gray-500 flex items-center gap-1"
+                    style={{ background: 'rgba(0,0,0,0.05)' }}
+                    title="Already paid? Tap to refresh your plan status"
+                  >
+                    <RefreshCw size={12} /> Refresh
+                  </button>
+                </div>
               </div>
             )}
 

@@ -24,22 +24,23 @@ export function ProProvider({ children }) {
   const [usage, setUsage] = useState(null)
   const [loading, setLoading] = useState(true)
 
-  const refresh = useCallback(async () => {
+  const refresh = useCallback(async (attempt = 0) => {
     try {
       const m = await memberships.getCurrent()
       setMembership(m)
 
       const today = new Date().toISOString().split('T')[0]
       const existing = await db.get('daily-usage', today)
-      if (existing) {
-        setUsage(existing)
-      } else {
-        setUsage({ generate: 0, thumbnail: 0 })
-      }
+      setUsage(existing || { generate: 0, thumbnail: 0 })
     } catch (e) {
-      console.error(e)
+      if (attempt < 3) {
+        // Backend may be waking up — retry with backoff
+        setTimeout(() => refresh(attempt + 1), (attempt + 1) * 4000)
+      } else {
+        setMembership({ isActive: false, tier: 'free', planName: 'free' })
+      }
     } finally {
-      setLoading(false)
+      if (attempt === 0) setLoading(false)
     }
   }, [])
 
