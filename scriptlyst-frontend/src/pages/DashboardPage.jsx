@@ -93,7 +93,7 @@ export default function DashboardPage() {
             <p className="font-display text-xl font-bold text-gray-900">
               {isPro ? '∞' : `${genCheck.remaining}/${genCheck.limit}`}
             </p>
-            <p className="text-[10px] text-gray-400 mt-0.5">{isPro ? 'Unlimited' : 'daily'}</p>
+            <p className="text-[10px] text-gray-400 mt-0.5">{isPro ? 'Unlimited' : 'left today'}</p>
           </div>
           <div className="flex-1 content-card p-3.5 text-center">
             <p className="text-[10px] text-gray-400 font-medium uppercase tracking-wider mb-1">Created</p>

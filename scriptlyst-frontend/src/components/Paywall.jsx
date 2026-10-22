@@ -13,6 +13,7 @@ const TIERS = [
     period: '/month',
     tagline: 'All text tools, unlimited',
     color: 'rgb(140,40,255)',
+    colorEnd: 'rgb(110,30,210)',
     colorAlpha: 'rgba(140,40,255,0.08)',
     colorBorder: 'rgba(140,40,255,0.2)',
     icon: Zap,
@@ -32,6 +33,7 @@ const TIERS = [
     period: '/month',
     tagline: 'Text + AI video generation',
     color: 'rgb(200,40,255)',
+    colorEnd: 'rgb(160,30,210)',
     colorAlpha: 'rgba(200,40,255,0.08)',
     colorBorder: 'rgba(200,40,255,0.35)',
     icon: Crown,
@@ -184,7 +186,7 @@ export default function Paywall({ onClose }) {
                     onClick={() => handleSubscribe(tier.id)}
                     disabled={!!loadingTier}
                     className="w-full py-3 rounded-xl font-display text-sm font-bold tracking-wide text-white transition-all active:scale-[0.97] disabled:opacity-60"
-                    style={{ background: `linear-gradient(135deg, ${tier.color}, ${tier.color}cc)` }}
+                    style={{ background: `linear-gradient(135deg, ${tier.color}, ${tier.colorEnd})` }}
                   >
                     {isLoading ? (
                       <span className="flex items-center justify-center gap-2">
