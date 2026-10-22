@@ -54,6 +54,7 @@ export default function Paywall({ onClose }) {
   const [user, setUser] = useState(auth.getCurrentUser())
   const [showLogin, setShowLogin] = useState(false)
   const [submittedTier, setSubmittedTier] = useState(null)
+  const [payError, setPayError] = useState(null)
 
   useEffect(() => {
     const unsub = auth.onAuthChange((u) => setUser(u))
@@ -63,17 +64,26 @@ export default function Paywall({ onClose }) {
   const handleSubscribe = async (tierId) => {
     if (!user) { setShowLogin(true); return }
     setLoadingTier(tierId)
+    setPayError(null)
+    // Open the tab right away (inside the click) so browsers don't block it as a pop-up
+    let tab = null
+    try { tab = window.open('', '_blank') } catch {}
     try {
       const url = await payments.getUpgradeUrl(tierId)
       if (url) {
-        payments.openUrl(url)
+        if (tab && !tab.closed) tab.location.href = url
+        else window.location.href = url
         setSubmittedTier(tierId)
         setTimeout(() => { refresh(); setLoadingTier(null) }, 3000)
       } else {
+        if (tab) tab.close()
+        setPayError('Could not open checkout. The server may be waking up — please try again in a moment.')
         setLoadingTier(null)
       }
     } catch (e) {
       console.error(e)
+      if (tab) tab.close()
+      setPayError('Could not open checkout. Please try again in a moment.')
       setLoadingTier(null)
     }
   }
@@ -132,6 +142,9 @@ export default function Paywall({ onClose }) {
           </div>
         ) : (
           <div className="px-4 pb-8 space-y-3">
+            {payError && (
+              <p className="text-center text-xs text-red-600 bg-red-50 rounded-xl p-3">{payError}</p>
+            )}
             {TIERS.map((tier) => {
               const Icon = tier.icon
               const isLoading = loadingTier === tier.id
