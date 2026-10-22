@@ -135,9 +135,9 @@ export default function Paywall({ onClose }) {
             <div className="w-14 h-14 rounded-2xl mx-auto mb-3 flex items-center justify-center bg-green-50">
               <Check size={24} className="text-green-500" />
             </div>
-            <p className="text-gray-900 font-display text-base font-bold">Payment submitted!</p>
+            <p className="text-gray-900 font-display text-base font-bold">Complete your payment in the Stripe tab</p>
             <p className="text-gray-500 text-xs mt-2 leading-relaxed max-w-[260px] mx-auto">
-              Your {submittedTier === 'creator-monthly' ? 'Creator' : 'Pro'} access will activate within a few minutes once the payment is confirmed.
+              Your {submittedTier === 'creator-monthly' ? 'Creator' : 'Pro'} access will activate a few minutes after payment. Then refresh this page.
             </p>
           </div>
         ) : (
