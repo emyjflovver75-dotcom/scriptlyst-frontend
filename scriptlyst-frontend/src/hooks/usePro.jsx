@@ -15,7 +15,7 @@ const ProContext = createContext({
 
 // Free tier: daily limits
 const FREE_LIMITS = {
-  generate: 3,
+  generate: 5,
   thumbnail: 1,
 }
 
@@ -57,7 +57,7 @@ export function ProProvider({ children }) {
 
   const checkCanUse = useCallback((feature) => {
     if (isPro) return { allowed: true, remaining: Infinity }
-    const limit = FREE_LIMITS[feature] || 3
+    const limit = FREE_LIMITS[feature] || 5
     const used = usage?.[feature] || 0
     return { allowed: used < limit, remaining: Math.max(0, limit - used), limit }
   }, [isPro, usage])
