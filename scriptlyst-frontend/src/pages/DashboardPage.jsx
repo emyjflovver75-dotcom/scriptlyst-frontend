@@ -16,7 +16,7 @@ import LoginModal from '../components/LoginModal'
 const QUICK_ACTIONS = [
   { icon: Lightbulb, label: 'Video Ideas', path: '/ideas', color: '#8c28ff' },
   { icon: FileText, label: 'Write Script', path: '/scripts', color: '#a855f7' },
-  { icon: Image, label: 'Thumbnails', path: '/visuals', color: '#c864ff' },
+  { icon: Image, label: 'Thumbnails (soon)', path: '/visuals', color: '#c864ff' },
   { icon: Zap, label: 'Viral Hooks', path: '/hooks', color: '#f59e0b' },
   { icon: Calendar, label: 'Calendar', path: '/calendar', color: '#10b981' },
   { icon: Repeat, label: 'Repurpose', path: '/repurpose', color: '#3b82f6' },

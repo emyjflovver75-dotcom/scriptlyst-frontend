@@ -8,7 +8,7 @@ import {
 const TOOLS = [
   { icon: Lightbulb, label: 'Content Ideas', desc: 'Generate 10 video ideas for your niche', path: '/ideas', color: '#8c28ff' },
   { icon: FileText, label: 'Script Writer', desc: 'Full scripts, shorts, intros & tutorials', path: '/scripts', color: '#a855f7' },
-  { icon: Image, label: 'Visual Creator', desc: 'Thumbnails, banners, social graphics', path: '/visuals', color: '#c864ff' },
+  { icon: Image, label: 'Visual Creator', desc: 'Thumbnails, banners, social graphics (coming soon)', path: '/visuals', color: '#c864ff' },
   { icon: Zap, label: 'Viral Hook Generator', desc: 'First 3 seconds that stop the scroll', path: '/hooks', color: '#f59e0b' },
   { icon: Calendar, label: 'Content Calendar', desc: 'Plan 30 days of content at once', path: '/calendar', color: '#10b981' },
   { icon: Repeat, label: 'Content Repurposer', desc: 'YouTube → Twitter → LinkedIn → IG → TikTok', path: '/repurpose', color: '#3b82f6' },

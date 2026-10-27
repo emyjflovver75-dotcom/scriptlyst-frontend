@@ -11,6 +11,9 @@ import LoginModal from '../components/LoginModal'
 import { auth } from '../lib/auth'
 import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircle, ExternalLink, LogIn } from 'lucide-react'
 
+// Set to true once a real image generator is connected on the backend
+const IMAGES_ENABLED = false
+
 const STYLES = [
   { id: 'youtube', label: 'YouTube Thumbnail', emoji: '🎬' },
   { id: 'shorts', label: 'Shorts / Reels Cover', emoji: '📱' },
@@ -182,8 +185,19 @@ export default function ThumbnailsPage() {
           ))}
         </div>
 
+        {/* ── IMAGES TAB: coming soon (no image generator connected yet) ── */}
+        {mode === 'images' && !IMAGES_ENABLED && (
+          <div className="px-4">
+            <div className="content-card p-6 text-center">
+              <Sparkles size={22} className="mx-auto mb-2 text-[rgb(140,40,255)]" />
+              <p className="font-display text-sm font-bold text-gray-800">Image creator coming soon</p>
+              <p className="text-xs text-gray-500 mt-1">Thumbnails, Shorts covers, banners and social posts are on the way. Your scripts, hooks, ideas and hashtags are ready to use now.</p>
+            </div>
+          </div>
+        )}
+
         {/* ── IMAGES TAB ── */}
-        {mode === 'images' && (
+        {mode === 'images' && IMAGES_ENABLED && (
           <div className="px-4 space-y-3">
             <div className="grid grid-cols-2 gap-2">
               {STYLES.map(s => (
