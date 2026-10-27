@@ -169,8 +169,8 @@ export default function DashboardPage() {
               <Crown size={18} className="text-[rgb(140,40,255)]" />
             </div>
             <div className="flex-1 text-left">
-              <p className="text-gray-800 text-sm font-display font-bold">Upgrade to Pro</p>
-              <p className="text-gray-400 text-[10px] mt-0.5">Unlimited everything for $17/mo</p>
+              <p className="text-gray-800 text-sm font-display font-bold">Upgrade your plan</p>
+              <p className="text-gray-400 text-[10px] mt-0.5">Unlimited text tools from $17/mo</p>
             </div>
             <Sparkles size={16} className="text-[rgb(200,100,255)]" />
           </button>
