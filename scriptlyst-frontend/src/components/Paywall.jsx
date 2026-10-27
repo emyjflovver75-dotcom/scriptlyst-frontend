@@ -37,13 +37,12 @@ const TIERS = [
     colorAlpha: 'rgba(200,40,255,0.08)',
     colorBorder: 'rgba(200,40,255,0.35)',
     icon: Crown,
-    badge: 'BEST VALUE',
+    badge: 'COMING SOON',
+    comingSoon: true,
     features: [
       'Everything in Creator',
       'AI video generation (HeyGen)',
-      'Full avatar & voice selection',
       'Video download links',
-      'Priority support',
     ],
   },
 ]
@@ -196,12 +195,12 @@ export default function Paywall({ onClose }) {
 
                   {/* CTA button */}
                   <button
-                    onClick={() => handleSubscribe(tier.id)}
-                    disabled={!!loadingTier}
+                    onClick={() => !tier.comingSoon && handleSubscribe(tier.id)}
+                    disabled={!!loadingTier || tier.comingSoon}
                     className="w-full py-3 rounded-xl font-display text-sm font-bold tracking-wide text-white transition-all active:scale-[0.97] disabled:opacity-60"
                     style={{ background: `linear-gradient(135deg, ${tier.color}, ${tier.colorEnd})` }}
                   >
-                    {isLoading ? (
+                    {tier.comingSoon ? 'Coming soon' : isLoading ? (
                       <span className="flex items-center justify-center gap-2">
                         <Loader2 size={16} className="animate-spin" /> Opening Stripe...
                       </span>

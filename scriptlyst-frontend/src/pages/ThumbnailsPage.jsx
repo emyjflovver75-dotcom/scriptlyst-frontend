@@ -13,6 +13,8 @@ import { Image, Download, Loader2, Sparkles, Palette, Video, CheckCircle, XCircl
 
 // Set to true once a real image generator is connected on the backend
 const IMAGES_ENABLED = false
+// Set to true once HeyGen API credit and a monthly video limit are in place
+const VIDEO_ENABLED = false
 
 const STYLES = [
   { id: 'youtube', label: 'YouTube Thumbnail', emoji: '🎬' },
@@ -275,7 +277,18 @@ export default function ThumbnailsPage() {
         )}
 
         {/* ── VIDEO TAB ── */}
-        {mode === 'video' && (
+        {/* ── VIDEO TAB: coming soon until HeyGen API credit + monthly limit are set up ── */}
+        {mode === 'video' && !VIDEO_ENABLED && (
+          <div className="px-4">
+            <div className="content-card p-6 text-center">
+              <Sparkles size={22} className="mx-auto mb-2 text-[rgb(140,40,255)]" />
+              <p className="font-display text-sm font-bold text-gray-800">AI video coming soon</p>
+              <p className="text-xs text-gray-500 mt-1">Turn your scripts into avatar videos. We're finishing this feature now.</p>
+            </div>
+          </div>
+        )}
+
+        {mode === 'video' && VIDEO_ENABLED && (
           <div className="px-4 space-y-3">
             {!user ? (
               <div className="content-card p-4 flex items-center gap-3">
